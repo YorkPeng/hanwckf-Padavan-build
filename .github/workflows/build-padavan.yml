@@ -38,9 +38,13 @@ jobs:
         sudo mkdir -p /opt/images/
     - name: Build Firmware
       env:
-        TNAME: K2P_nano-5.0
+        TNAME: K2P_nano
       run: |
         cd /opt/rt-n56u/trunk
+        if [ ! -f configs/templates/$TNAME.config ] ; then
+        echo "configs/templates/$TNAME.config not found "
+        exit 1
+        fi
         cp -f configs/templates/$TNAME.config .config
         sudo ./clear_tree
         fakeroot ./build_firmware_modify $TNAME
